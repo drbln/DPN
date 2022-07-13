@@ -1,0 +1,20 @@
+---
+- hosts: "nginx"
+  become: yes
+  become_user: root
+  remote_user: ubuntu
+  vars_files:
+    - var.yml
+  
+  tasks:
+  - name: "Install nginx via apt"
+    ansible.builtin.apt:
+      name: "nginx"
+      state: "latest"
+      update_cache: true
+
+  - name: "Test"
+    shell: "sudo iptables -t nat -A PREROUTING -d {{ network_interface }} -p tcp -m tcp --dport 2222 -j DNAT --to-destination 192.168.10.11:22"
+  
+  - name: "Test2"
+    shell: "sudo iptables -t nat -A POSTROUTING -d 192.168.10.11 -p tcp -m tcp --sport 22 -j SNAT --to-source {{ network_interface }}:2222"
