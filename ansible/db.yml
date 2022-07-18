@@ -1,0 +1,20 @@
+- hosts: "db1"
+  become: yes
+  become_user: root
+  remote_user: ubuntu
+  
+  tasks:
+  - name: "Install mysql via apt"
+    ansible.builtin.apt:
+      name: "mysql"
+      state: "latest"
+      update_cache: true
+
+  - name: start up the mysql service  
+    shell: "service mysql start" 
+
+  - name: ensure mysql is enabled to run on startup  
+    service:
+      name: mysql
+      state: started
+      enabled: true
