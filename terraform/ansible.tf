@@ -17,13 +17,3 @@ resource "null_resource" "nginx" {
     null_resource.wait
   ]
 }
-
-resource "null_resource" "db" {
-  provisioner "local-exec" {
-    command = "ANSIBLE_FORCE_COLOR=1 ansible-playbook -i ../ansible/inventory/prod.yml ../ansible/db.yml"
-  }
-
-  depends_on = [
-    null_resource.wait
-  ]
-}

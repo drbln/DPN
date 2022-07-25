@@ -18,3 +18,21 @@
  # 
  # - name: "Test2"
  #   shell: "sudo iptables -t nat -A POSTROUTING -d 192.168.10.11 -p tcp -m tcp --sport 22 -j SNAT --to-source {{ network_interface }}:2222"
+
+- hosts: "db1"
+  become: yes
+  become_user: root
+  remote_user: ubuntu
+  
+  tasks:
+  - name: "Install mysql via apt"
+    ansible.builtin.apt:
+      name: "mysql-server"
+      state: "latest"
+      update_cache: true
+
+  - name: "Install mysql2 via apt"
+    ansible.builtin.apt:
+      name: "mysql-client-core-8.0"
+      state: "latest"
+      update_cache: true
